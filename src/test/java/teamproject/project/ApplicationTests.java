@@ -1,4 +1,4 @@
-package teamproject.onlinebookingsystem;
+package teamproject.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
