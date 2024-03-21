@@ -1,12 +1,9 @@
 package teamproject.project.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import teamproject.project.dto.registration.UserRegistrationRequestDto;
-import teamproject.project.dto.registration.UserRegistrationResponseDto;
-import teamproject.project.exception.RegistrationException;
-import teamproject.project.mapper.UserMapper;
+import teamproject.project.dto.verification.UpdateVerificationDto;
+import teamproject.project.exception.EntityNotFoundException;
 import teamproject.project.model.Role;
 import teamproject.project.model.User;
 import teamproject.project.repository.RoleRepository;
@@ -16,30 +13,30 @@ import teamproject.project.service.UserService;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserMapper userMapper;
 
     @Override
-    public UserRegistrationResponseDto register(UserRegistrationRequestDto requestDto)
-            throws RegistrationException {
-        if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
-            throw new RegistrationException("User with email " + requestDto.getEmail()
-                    + "already exists");
-        }
-
-        User user = new User();
-        user.setEmail(requestDto.getEmail());
-        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        user.setFullName(requestDto.getFullName());
-        if (requestDto.getIsVolunteer()) {
-            user.getRoles().add(roleRepository.findByRoleName(Role.RoleName.ROLE_VOLUNTEER));
-        } else {
-            user.getRoles().add(roleRepository.findByRoleName(Role.RoleName.ROLE_USER));
-        }
-
+    public String updateValidation(UpdateVerificationDto request) {
+        checkForAdmin(request.getEmail());
+        User user = findUserByEmail(request.getEmail());
+        user.setVerified(request.getStatement());
         User savedUser = userRepository.save(user);
-        return userMapper.toUserRegistrationResponseDto(savedUser);
+        return savedUser.isVerified()
+                ? "User with email " + savedUser.getEmail() + " was verified"
+                : "Verification for user with email " + savedUser.getEmail() + " was disabled";
+    }
+
+    private void checkForAdmin(String email) {
+        User user = findUserByEmail(email);
+        if (user.getRoles().contains(roleRepository.findByRoleName(Role.RoleName.ROLE_ADMIN))) {
+            throw new RuntimeException("You can not update ADMIN roles");
+        }
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new EntityNotFoundException("User with email " + email + " was not found!")
+        );
     }
 }

@@ -1,10 +1,7 @@
 package teamproject.project.service;
 
-import teamproject.project.dto.registration.UserRegistrationRequestDto;
-import teamproject.project.dto.registration.UserRegistrationResponseDto;
-import teamproject.project.exception.RegistrationException;
+import teamproject.project.dto.verification.UpdateVerificationDto;
 
 public interface UserService {
-    UserRegistrationResponseDto register(UserRegistrationRequestDto requestDto)
-            throws RegistrationException;
+    String updateValidation(UpdateVerificationDto request);
 }

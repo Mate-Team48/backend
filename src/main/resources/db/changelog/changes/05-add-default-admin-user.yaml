@@ -15,6 +15,9 @@ databaseChangeLog:
               - column:
                   name: full_name
                   value: "Admin User"
+              - column:
+                  name: is_verified
+                  value: 1
         - insert:
             tableName: users_roles
             columns:

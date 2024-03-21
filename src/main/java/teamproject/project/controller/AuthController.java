@@ -12,13 +12,13 @@ import teamproject.project.dto.registration.UserRegistrationRequestDto;
 import teamproject.project.dto.registration.UserRegistrationResponseDto;
 import teamproject.project.exception.RegistrationException;
 import teamproject.project.security.AuthenticationService;
-import teamproject.project.service.UserService;
+import teamproject.project.service.AuthService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-    private final UserService userService;
+    private final AuthService authService;
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
@@ -31,6 +31,6 @@ public class AuthController {
     public UserRegistrationResponseDto registerUser(
             @RequestBody @Valid UserRegistrationRequestDto requestDto
     ) throws RegistrationException {
-        return userService.register(requestDto);
+        return authService.register(requestDto);
     }
 }
