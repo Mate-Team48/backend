@@ -3,6 +3,8 @@ package teamproject.project.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import teamproject.project.dto.login.UserLoginRequestDto;
+import teamproject.project.dto.login.UserLoginResponseDto;
 import teamproject.project.dto.registration.UserRegistrationRequestDto;
 import teamproject.project.dto.registration.UserRegistrationResponseDto;
 import teamproject.project.exception.RegistrationException;
@@ -11,11 +13,13 @@ import teamproject.project.model.Role;
 import teamproject.project.model.User;
 import teamproject.project.repository.RoleRepository;
 import teamproject.project.repository.UserRepository;
+import teamproject.project.security.AuthenticationService;
 import teamproject.project.service.AuthService;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+    private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -41,6 +45,15 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User savedUser = userRepository.save(user);
-        return userMapper.toUserRegistrationResponseDto(savedUser);
+        UserLoginResponseDto authenticated = authenticationService.authenticate(
+                new UserLoginRequestDto()
+                        .setEmail(requestDto.getEmail())
+                        .setPassword(requestDto.getPassword())
+        );
+
+        UserRegistrationResponseDto responseDto = userMapper
+                .toUserRegistrationResponseDto(savedUser);
+        responseDto.setToken(authenticated.token());
+        return responseDto;
     }
 }
