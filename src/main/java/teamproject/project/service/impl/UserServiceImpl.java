@@ -1,9 +1,14 @@
 package teamproject.project.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import teamproject.project.dto.UserDto;
 import teamproject.project.dto.verification.UpdateVerificationDto;
+import teamproject.project.exception.AdminUpdateException;
 import teamproject.project.exception.EntityNotFoundException;
+import teamproject.project.mapper.UserMapper;
 import teamproject.project.model.Role;
 import teamproject.project.model.User;
 import teamproject.project.repository.RoleRepository;
@@ -15,6 +20,14 @@ import teamproject.project.service.UserService;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserMapper userMapper;
+
+    @Override
+    public List<UserDto> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).stream()
+                .map(userMapper::userToUserDto)
+                .toList();
+    }
 
     @Override
     public String updateValidation(UpdateVerificationDto request) {
@@ -30,7 +43,7 @@ public class UserServiceImpl implements UserService {
     private void checkForAdmin(String email) {
         User user = findUserByEmail(email);
         if (user.getRoles().contains(roleRepository.findByRoleName(Role.RoleName.ROLE_ADMIN))) {
-            throw new RuntimeException("You can not update ADMIN roles");
+            throw new AdminUpdateException("You can not update ADMIN role");
         }
     }
 

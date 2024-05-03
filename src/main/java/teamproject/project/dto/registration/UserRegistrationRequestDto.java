@@ -1,7 +1,6 @@
 package teamproject.project.dto.registration;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import teamproject.project.validation.email.Email;
 import teamproject.project.validation.password.Password;
@@ -20,6 +19,4 @@ public class UserRegistrationRequestDto {
     private String repeatPassword;
     @NotBlank
     private String fullName;
-    @NotNull
-    private Boolean isVolunteer;
 }
