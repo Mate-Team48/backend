@@ -3,6 +3,7 @@ package teamproject.project.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import teamproject.project.dto.login.UserLoginRequestDto;
 import teamproject.project.dto.login.UserLoginResponseDto;
 import teamproject.project.dto.registration.UserRegistrationRequestDto;
@@ -26,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
 
     @Override
+    @Transactional
     public UserRegistrationResponseDto register(UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
@@ -38,11 +40,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setFullName(requestDto.getFullName());
         user.setVerified(false);
-        if (requestDto.getIsVolunteer()) {
-            user.getRoles().add(roleRepository.findByRoleName(Role.RoleName.ROLE_VOLUNTEER));
-        } else {
-            user.getRoles().add(roleRepository.findByRoleName(Role.RoleName.ROLE_USER));
-        }
+        user.getRoles().add(roleRepository.findByRoleName(Role.RoleName.ROLE_USER));
 
         User savedUser = userRepository.save(user);
         UserLoginResponseDto authenticated = authenticationService.authenticate(
