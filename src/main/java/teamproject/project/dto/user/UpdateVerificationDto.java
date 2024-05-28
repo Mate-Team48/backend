@@ -1,4 +1,4 @@
-package teamproject.project.dto.verification;
+package teamproject.project.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

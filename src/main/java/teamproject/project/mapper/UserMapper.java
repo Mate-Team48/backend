@@ -2,7 +2,7 @@ package teamproject.project.mapper;
 
 import org.mapstruct.Mapper;
 import teamproject.project.config.MapperConfig;
-import teamproject.project.dto.UserDto;
+import teamproject.project.dto.user.UserDto;
 import teamproject.project.dto.registration.UserRegistrationResponseDto;
 import teamproject.project.model.User;
 
