@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import teamproject.project.dto.fundraising.FundraisingDto;
-import teamproject.project.dto.user.UserDto;
 import teamproject.project.dto.user.UpdateVerificationDto;
+import teamproject.project.dto.user.UserDto;
 import teamproject.project.service.UserService;
 
 @RestController
@@ -34,10 +34,12 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/fundraisings")
-    public List<FundraisingDto> getAllUserFundraisings(@PathVariable long userId,
-                                                       @RequestParam(required = false) boolean isActive,
-                                                       @RequestParam(required = false) String category,
-                                                       Pageable pageable) {
+    public List<FundraisingDto> getAllUserFundraisings(
+            @PathVariable long userId,
+            @RequestParam(required = false) boolean isActive,
+            @RequestParam(required = false) String category,
+            Pageable pageable
+    ) {
         return userService.getAllUserFundraisings(userId, isActive, category, pageable);
     }
 

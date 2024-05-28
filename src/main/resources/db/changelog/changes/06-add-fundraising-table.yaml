@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-fundraisings-table
+      author: Sosunovych_Bohdan
+      changes:
+        - createTable:
+            tableName: fundraisings
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: sphere
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fundraising_info
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_info
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: picture_url
+                  type: varchar(255)
+              - column:
+                  name: is_finished
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: add-foreign-key-to-fundraisings-user
+      author: Sosunovych_Bohdan
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: fundraisings
+            baseColumnNames: user_id
+            constraintName: fk_fundraisings_user
+            referencedTableName: users
+            referencedColumnNames: id

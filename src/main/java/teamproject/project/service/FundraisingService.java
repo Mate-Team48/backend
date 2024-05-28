@@ -1,10 +1,10 @@
 package teamproject.project.service;
 
-import org.springframework.data.domain.*;
-import teamproject.project.dto.fundraising.*;
-import teamproject.project.model.*;
-
-import java.util.*;
+import java.util.List;
+import org.springframework.data.domain.Pageable;
+import teamproject.project.dto.fundraising.CreateFundraisingRequestDto;
+import teamproject.project.dto.fundraising.FundraisingDto;
+import teamproject.project.model.User;
 
 public interface FundraisingService {
     List<FundraisingDto> getFundraisings(boolean isActive, String category, Pageable pageable);

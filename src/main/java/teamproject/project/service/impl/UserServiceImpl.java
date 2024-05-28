@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import teamproject.project.dto.fundraising.FundraisingDto;
-import teamproject.project.dto.user.UserDto;
 import teamproject.project.dto.user.UpdateVerificationDto;
+import teamproject.project.dto.user.UserDto;
 import teamproject.project.exception.AdminUpdateException;
 import teamproject.project.exception.EntityNotFoundException;
 import teamproject.project.mapper.FundraisingMapper;
@@ -47,8 +47,14 @@ public class UserServiceImpl implements UserService {
                                                        boolean isActive,
                                                        String category,
                                                        Pageable pageable) {
-        Fundraising.Category fundraisingCategory = Fundraising.Category.valueOf(category.toUpperCase());
-        List<Fundraising> fundraisings = fundraisingRepository.findAllByUserIdAndIsActiveAndCategory(userId, isActive, fundraisingCategory, pageable);
+        Fundraising.Category fundraisingCategory =
+                Fundraising.Category.valueOf(category.toUpperCase());
+        List<Fundraising> fundraisings =
+                fundraisingRepository.findAllByUserIdAndIsActiveAndCategory(
+                        userId,
+                        isActive,
+                        fundraisingCategory,
+                        pageable);
         return fundraisings.stream()
                 .map(fundraisingMapper::fundraisingToDto)
                 .toList();

@@ -1,10 +1,17 @@
 package teamproject.project.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "fundraisings")
@@ -15,10 +22,11 @@ public class Fundraising {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-    @Column(name = "sphere", nullable = false)
+    @Column(name = "sphere", columnDefinition = "varchar", nullable = false)
     @Enumerated(EnumType.STRING)
     private Category sphere;
     @Column(name = "fundraising_info", nullable = false)

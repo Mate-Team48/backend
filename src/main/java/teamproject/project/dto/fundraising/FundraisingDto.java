@@ -1,8 +1,8 @@
 package teamproject.project.dto.fundraising;
 
-import jakarta.persistence.*;
-import lombok.*;
-import teamproject.project.model.*;
+import lombok.Data;
+import teamproject.project.model.Fundraising;
+import teamproject.project.model.User;
 
 @Data
 public class FundraisingDto {
