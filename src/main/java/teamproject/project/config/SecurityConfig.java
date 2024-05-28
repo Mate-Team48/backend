@@ -66,6 +66,7 @@ public class SecurityConfig {
                                         "/users/{userId}/fundraisings",
                                         "/fundraisings",
                                         "/fundraisings/{fundraisingId}",
+                                        "/swagger-ui.html",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/error"
