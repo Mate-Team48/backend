@@ -21,7 +21,7 @@ services:
     depends_on:
       - mysqldb
     restart: on-failure
-    image: online-book-store
+    image: volunteer-bridge
     build: .
     env_file: ./.env
     ports:
